@@ -136,16 +136,16 @@
          :endpoint      "/hello-proxy"
          :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:9000/hello/world")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-get "http://localhost:10000/hello-proxy/world")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-get "http://localhost:10000/hello-proxy/world" {:as :stream})]
-          (is (= (slurp (:body response)) "Hello, World!")))
+          (is (= "Hello, World!" (slurp (:body response)))))
         (let [response (http-post "http://localhost:10000/hello-proxy/post/" {:as :stream :body "I'm posted!"})]
-          (is (= (:status response) 200))
-          (is (= (slurp (:body response)) "I'm posted!")))))
+          (is (= 200 (:status response)))
+          (is (= "I'm posted!" (slurp (:body response)))))))
 
     (testing "basic https proxy support"
       (with-target-and-proxy-servers
@@ -160,11 +160,11 @@
          :endpoint      "/hello-proxy"
          :target-endpoint "/hello"}
         (let [response (http-get "https://localhost:9001/hello/world" default-options-for-https-client)]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-get "https://localhost:10001/hello-proxy/world" default-options-for-https-client)]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))))
 
     (testing "basic http->https proxy support"
       (with-target-and-proxy-servers
@@ -178,11 +178,11 @@
          :endpoint      "/hello-proxy"
          :target-endpoint "/hello"}
         (let [response (http-get "https://localhost:9001/hello/world" default-options-for-https-client)]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-get "http://localhost:10000/hello-proxy/world")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))))
 
     (testing "basic https->http proxy support"
       (with-target-and-proxy-servers
@@ -196,11 +196,11 @@
          :endpoint      "/hello-proxy"
          :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:9000/hello/world")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-get "https://localhost:10001/hello-proxy/world" default-options-for-https-client)]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))))
     (testing "redirect test with proxy"
       (with-target-and-proxy-servers
         {:target       {:host "0.0.0.0"
@@ -212,24 +212,24 @@
         :endpoint      "/hello-proxy"
         :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:9000/hello")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-get "http://localhost:9000/hello/world")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-get "http://localhost:10000/hello-proxy/"
                                  {:follow-redirects false
                                   :as :text})]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-post "http://localhost:10000/hello-proxy/"
                                  {:follow-redirects false
                                   :as :text})]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-get "http://localhost:10000/hello-proxy/world")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))))
 
     (testing "proxy redirect fails if :follow-redirects set to false"
       (with-target-and-proxy-servers
@@ -242,11 +242,11 @@
          :endpoint      "/hello-proxy"
          :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:9000/hello")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-get "http://localhost:10000/hello-proxy/"
                                  {:follow-redirects false})]
-          (is (= (:status response 302))))))
+          (is (= 302 (:status response))))))
 
     (testing "proxy redirect fails on POST if :force-redirects set to false"
       (with-target-and-proxy-servers
@@ -261,11 +261,11 @@
         (let [response (http-get "http://localhost:10000/hello-proxy/"
                                  {:follow-redirects false
                                   :as :text})]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))
         (let [response (http-post "http://localhost:10000/hello-proxy/"
                                  {:follow-redirects false})]
-          (is (= (:status response 302))))))
+          (is (= 302 (:status response))))))
 
     (testing "proxy redirect to non-target host fails"
       (with-target-and-proxy-servers
@@ -278,7 +278,7 @@
          :endpoint      "/hello-proxy"
          :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:10000/hello-proxy/wrong-host")]
-          (is (= (:status response 502))))))
+          (is (= 502 (:status response))))))
 
     (testing "redirect test with fully qualified url, correct host, and proxied path"
       (with-target-and-proxy-servers
@@ -293,8 +293,8 @@
         (let [response (http-get "http://localhost:10000/hello-proxy/fully-qualified"
                                  {:follow-redirects false
                                   :as :text})]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World!")))))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World!" (:body response))))))
 
     (testing "redirect test with correct host on non-proxied path"
       (with-target-and-proxy-servers
@@ -307,15 +307,15 @@
          :endpoint      "/hello-proxy"
          :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:9000/different")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Non-proxied path")))
+          (is (= 200 (:status response)))
+          (is (= "Non-proxied path" (:body response))))
         (let [response (http-get "http://localhost:10000/different")]
-          (is (= (:status response) 404)))
+          (is (= 404 (:status response))))
         (let [response (http-get "http://localhost:10000/hello-proxy/different-path"
                                  {:follow-redirects false
                                   :as :text})]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Non-proxied path")))))
+          (is (= 200 (:status response)))
+          (is (= "Non-proxied path" (:body response))))))
 
     (testing "gzipped responses not truncated"
       (with-target-and-proxy-servers
@@ -328,11 +328,11 @@
          :endpoint      "/hello-proxy"
          :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:9000/hello")]
-          (is (= (:body response) gzip-body))
-          (is (= (:orig-content-encoding response) "gzip")))
+          (is (= gzip-body (:body response)))
+          (is (= "gzip" (:orig-content-encoding response))))
         (let [response (http-get "http://localhost:10000/hello-proxy")]
-          (is (= (:body response) gzip-body))
-          (is (= (:orig-content-encoding response) "gzip")))))
+          (is (= gzip-body (:body response)))
+          (is (= "gzip" (:orig-content-encoding response))))))
 
     (testing "proxy works with regex"
       (with-target-and-proxy-servers
@@ -345,17 +345,17 @@
          :endpoint      "/"
          :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:10000/production/certificate/foo")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Proxied to /hello/production/certificate/foo")))
+          (is (= 200 (:status response)))
+          (is (= "Proxied to /hello/production/certificate/foo" (:body response))))
         (let [response (http-get "http://localhost:10000/hello/world")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Hello, World! (fallthrough)")))
+          (is (= 200 (:status response)))
+          (is (= "Hello, World! (fallthrough)" (:body response))))
         (let [response (http-get "http://localhost:10000/goodbye/world")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Goodbye, World! (fallthrough)")))
+          (is (= 200 (:status response)))
+          (is (= "Goodbye, World! (fallthrough)" (:body response))))
         (let [response (http-get "http://localhost:10000/production/cert/foo")]
-          (is (= (:status response) 404))
-          (is (= (:body response) "Not Found (fallthrough)")))))
+          (is (= 404 (:status response)))
+          (is (= "Not Found (fallthrough)" (:body response))))))
 
     (testing "proxy regex matches beginning of string"
       (with-target-and-proxy-servers
@@ -368,11 +368,11 @@
          :endpoint "/"
          :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:10000/hello-proxy")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Proxied to /hello/hello-proxy")))
+          (is (= 200 (:status response)))
+          (is (= "Proxied to /hello/hello-proxy" (:body response))))
         (let [response (http-get "http://localhost:10000/production/hello-proxy")]
-          (is (= (:status response) 404))
-          (is (= (:body response) "Not Found (fallthrough)")))))
+          (is (= 404 (:status response)))
+          (is (= "Not Found (fallthrough)" (:body response))))))
 
     (testing "proxy regex does not need to match entire request uri"
       (with-target-and-proxy-servers
@@ -385,8 +385,8 @@
          :endpoint "/"
          :target-endpoint "/hello"}
         (let [response (http-get "http://localhost:10000/hello-proxy/world")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Proxied to /hello/hello-proxy/world")))))
+          (is (= 200 (:status response)))
+          (is (= "Proxied to /hello/hello-proxy/world" (:body response))))))
 
     (testing "proxy works with regex and no prepended path"
       (with-target-and-proxy-servers
@@ -399,8 +399,8 @@
          :endpoint      "/"
          :target-endpoint "/"}
         (let [response (http-get "http://localhost:10000/production/certificate/foo")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Proxied to /production/certificate/foo")))))
+          (is (= 200 (:status response)))
+          (is (= "Proxied to /production/certificate/foo" (:body response))))))
 
     (testing "no repeat slashes exist in rewritten uri"
       (with-target-and-proxy-servers
@@ -413,8 +413,8 @@
          :endpoint      "/"
          :target-endpoint "/"}
         (let [response (http-get "http://localhost:10000/production/certificate/foo")]
-          (is (= (:status response) 200))
-          (is (= (:body response) "Proxied to /production/certificate/foo")))))))
+          (is (= 200 (:status response)))
+          (is (= "Proxied to /production/certificate/foo" (:body response))))))))
 
 (deftest test-wrap-add-cache-headers
   (let [put-request     {:request-method :put}
@@ -456,13 +456,13 @@
       (let [mw-fn (core/wrap-with-certificate-cn identity)
             post-req (mw-fn {})]
         (testing "ssl-client-cn is set to nil"
-          (is (= post-req {:ssl-client-cn nil})))))
+          (is (= {:ssl-client-cn nil} post-req)))))
 
     (testing "and there is a cert"
       (let [mw-fn (core/wrap-with-certificate-cn identity)
             post-req (mw-fn {:ssl-client-cert (pem->cert "dev-resources/ssl/cert.pem")})]
         (testing "ssl-client-cn is set properly"
-          (is (= (:ssl-client-cn post-req) "localhost")))))))
+          (is (= "localhost" (:ssl-client-cn post-req))))))))
 
 (deftest test-wrap-add-x-frame-options-deny
   (let [get-request    {:request-method :get}
